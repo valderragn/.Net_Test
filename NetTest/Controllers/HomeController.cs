@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NetTest.Data;
 using NetTest.Models;
+using NetTest.Logging;
 using System.Diagnostics;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -11,17 +12,17 @@ namespace NetTest.Controllers
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly ILogger<HomeController> _logger;
+        //private readonly ILogger<HomeController> _logger;
 
         public HomeController(ApplicationDbContext context, ILogger<HomeController> logger)
         {
             _context = context;
-            _logger = logger;
+            //_logger = logger;
         }
 
         public async Task<IActionResult> Index()
         {
-            _logger.LogInformation("Index page visited at {DT}", DateTime.UtcNow);
+            LoggerHelper.LogInformation("Index page visited at " + DateTime.Now.ToString());
             var dataRecords = await _context.DataRecords
                                     .OrderByDescending(r => r.DataId)
                                     .ToListAsync();
@@ -30,7 +31,7 @@ namespace NetTest.Controllers
 
         public IActionResult Create()
         {
-            _logger.LogInformation("Create page visited at {DT}", DateTime.UtcNow);
+            LoggerHelper.LogInformation("Index page visited at {DT}", DateTime.Now.ToString());
             return View();
         }
 
@@ -40,12 +41,11 @@ namespace NetTest.Controllers
         {
             if (!ModelState.IsValid)
             {
-                // Log all validation errors
                 foreach (var state in ModelState)
                 {
                     foreach (var error in state.Value.Errors)
                     {
-                        _logger.LogError($"Property: {state.Key}, Error: {error.ErrorMessage}");
+                        LoggerHelper.LogError($"Property: {state.Key}, Error: {error.ErrorMessage}");
                     }
                 }
                 return View(dataRecord);
@@ -82,7 +82,7 @@ namespace NetTest.Controllers
             {
                 return NotFound();
             }
-            _logger.LogInformation("Edit Id page visited at {DT}", DateTime.UtcNow);
+            LoggerHelper.LogInformation("Index page visited at {DT}", DateTime.Now.ToString());
             return View(dataRecord);
         }
 
@@ -98,7 +98,7 @@ namespace NetTest.Controllers
                 record.UpdateDate = DateTime.Now;
                 record.UpdateUser = "BaseTest";
 
-                _logger.LogInformation("Data Image is : " + DataImage);
+                LoggerHelper.LogInformation("Data Image is : " + DataImage);
                 if (DataImage != null && DataImage.Length > 0)
                 {
                     

@@ -1,12 +1,23 @@
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using NetTest.Data;
+using NetTest.Logging;
+using Serilog.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
 Log.Logger = new LoggerConfiguration()
-    .WriteTo.File("Logs/myapp.log", rollingInterval: RollingInterval.Day)
+    .Enrich.FromLogContext()
+    .Enrich.WithProperty("Application", "NetTest")
+    .Enrich.With<CustomEnricher>()
+    .WriteTo.File(
+        "Logs/myapp.log",
+        rollingInterval: RollingInterval.Day,
+        outputTemplate: "<{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz}><{SourceContext}><{LineNumber}>[{Level:u3}] {Message:lj}{NewLine}{Exception}"
+    )
+    .Filter.ByExcluding(Matching.FromSource("Microsoft"))
     .CreateLogger();
+
 
 builder.Host.UseSerilog();
 
