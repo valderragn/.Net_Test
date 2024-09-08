@@ -1,0 +1,62 @@
+﻿@model NetTest.Models.DataRecord
+
+@{
+}
+
+<h1>Edit DataRecord</h1>
+
+<h4>DataRecord</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="DataId" />
+            <div class="form-group">
+                <label asp-for="DataName" class="control-label"></label>
+                <input asp-for="DataName" class="form-control" />
+                <span asp-validation-for="DataName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataDesc" class="control-label"></label>
+                <input asp-for="DataDesc" class="form-control" />
+                <span asp-validation-for="DataDesc" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="Image">Gambar :</label>
+                <br />
+                <div class="file-input-container">
+                    <label class="custom-button" for="Image">Choose File</label>
+                    <input type="file" id="Image" name="DataImage" class="file-input" accept="image/*" onchange="previewImage(event)">
+                </div>
+                @if (!string.IsNullOrEmpty(Model.DataImage))
+                {
+                    <img src="data:image/jpeg;base64,@Model.DataImage" alt="Image" style="width: 100px; height: 100px;" />
+                }
+            </div>
+            <div class="form-group">
+                <label asp-for="InquiryDate" class="control-label"></label>
+                <input asp-for="InquiryDate" class="form-control" readonly />
+                <span asp-validation-for="InquiryDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InquiryUser" class="control-label"></label>
+                <input asp-for="InquiryUser" class="form-control" readonly />
+                <span asp-validation-for="InquiryUser" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

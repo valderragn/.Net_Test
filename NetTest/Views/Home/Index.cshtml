@@ -1,0 +1,79 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container">
+    <div class="card left-card">
+        <h2>Data View</h2>
+        <div class="card-inside scrollable">
+            @foreach (var record in Model)
+            {
+                <div class="card mb-3">
+                    <div class="row g-0">
+                        <img src="@(string.IsNullOrEmpty(record.DataImage) ? "/images/placeholder.jpg" : $"data:image/jpeg;base64,{record.DataImage}")" class="img-fluid rounded-start data-image" alt="Image">
+                        <div class="col-md-8">
+                            <div class="card-body data-card" data-edit-url="@Url.Action("Edit", "Home")">
+                                <form class="data-view" method="post" action="@Url.Action("Edit", "Home")" enctype="multipart/form-data">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="DataId" value="@record.DataId" />
+                                    <div>
+                                        <h5 class="card-title">
+                                            <span class="display-mode">@record.DataName</span>
+                                            <input type="text" name="DataName" class="edit-mode form-control" value="@record.DataName" style="display:none;">
+                                        </h5>
+                                        <p class="card-text">
+                                            <span class="display-mode">@record.DataDesc</span>
+                                            <textarea name="DataDesc" class="edit-mode form-control" style="display:none;">@record.DataDesc</textarea>
+                                        </p>
+                                        <div class="edit-mode" style="display:none;">
+                                            <label for="DataImage">Change Image:</label>
+                                            <input type="file" name="DataImage" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p class="card-text"><small class="text-muted">@record.InquiryDate</small></p>
+                                        <p class="card-text"><small class="text-muted">@record.InquiryUser</small></p>
+                                    </div>
+                                    <div class="button-group">
+                                        <button type="button" class="btn btn-primary edit-btn" onclick="toggleEdit(this)">Edit</button>
+                                        <button type="submit" class="btn btn-success save-btn" style="display:none;">Confirm</button>
+                                        <button type="submit" formaction="@Url.Action("Delete", "Home")" formmethod="post" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this record?');">Delete</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="card right-card">
+        <h2>Insert New</h2>
+        <div class="card-inside scrollable">
+            <form asp-action="Create" method="post" enctype="multipart/form-data">
+                <label for="Nama">Judul/Nama :</label>
+                <br />
+                <input type="text" id="Nama" name="DataName">
+                <br />
+                <img id="imagePreview" class="image-preview" src="#" alt="Image Preview" style="display: none;">
+                <br />
+                <label for="Image">Gambar :</label>
+                <br />
+                <div class="file-input-container">
+                    <label class="custom-button" for="Image">Choose File</label>
+                    <input type="file" id="Image" name="DataImage" class="file-input" accept="image/*" onchange="previewImage(event)">
+                </div>
+                <br />
+                <label for="desc">Deskripsi :</label>
+                <br />
+                <input type="text" id="desc" name="DataDesc">
+                <br />
+                <input type="hidden" name="InquiryDate" value="@DateTime.Now">
+                <input type="hidden" name="InquiryUser" value="CurrentUser"> <!-- Replace with actual user -->
+                <br />
+                <button type="submit" class="custom-button">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>

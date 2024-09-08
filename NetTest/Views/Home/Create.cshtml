@@ -1,0 +1,31 @@
+﻿@{
+}
+
+<div class="card right-card">
+    <h2>Insert New</h2>
+    <div class="card-inside scrollable">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            <label for="Nama">Judul/Nama :</label>
+            <br />
+            <input type="text" id="Nama" name="DataName" required>
+            <br />
+            <img id="imagePreview" class="image-preview" src="#" alt="Image Preview" style="display: none;">
+            <br />
+            <label for="Image">Gambar :</label>
+            <br />
+            <div class="file-input-container">
+                <label class="custom-button" for="Image">Choose File</label>
+                <input type="file" id="Image" name="DataImage" class="file-input" accept="image/*" onchange="previewImage(event)">
+            </div>
+            <br />
+            <label for="desc">Deskripsi :</label>
+            <br />
+            <input type="text" id="desc" name="DataDesc">
+            <br />
+            <input type="hidden" name="InquiryDate" value="@DateTime.Now">
+            <input type="hidden" name="InquiryUser" value="CurrentUser"> <!-- Replace with actual user -->
+            <br />
+            <button type="submit" class="custom-button">Submit</button>
+        </form>
+    </div>
+</div>
