@@ -127,7 +127,7 @@ namespace NetTest.Controllers
             {
                 _context.DataRecords.Remove(record);
                 _context.SaveChanges();
-                return RedirectToAction("Index", "Home"); // Redirect to the Index action of the Home controller
+                return RedirectToAction("Index", "Home");
             }
             return NotFound();
         }

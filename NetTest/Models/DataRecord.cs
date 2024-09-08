@@ -16,16 +16,16 @@ namespace NetTest.Models
         public string DataDesc { get; set; }
 
         [BindNever]
-        public string? DataImage { get; set; } // Nullable string
+        public string? DataImage { get; set; }
 
         public DateTime InquiryDate { get; set; }
 
-        public DateTime? UpdateDate { get; set; } // Nullable DateTime
+        public DateTime? UpdateDate { get; set; }
 
         [Required]
         public string InquiryUser { get; set; }
 
-        public string? UpdateUser { get; set; } // Nullable string
+        public string? UpdateUser { get; set; }
     }
 
 
